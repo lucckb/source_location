@@ -123,14 +123,14 @@ install:
         (cd llvm-${LLVM_VERSION}/build/projects/libcxxabi && make install -j${PARALLEL_BUILD_JOBS}) || exit 1
       fi
 
-      export CXXFLAGS="-stdlib=libc++ -isystem ${DEPS_DIR}/llvm-${LLVM_VERSION}/install/include/c++/v1"
+      export CXXFLAGS="-nostdinc++ -isystem ${DEPS_DIR}/llvm-${LLVM_VERSION}/install/include/c++/v1"
       export LDFLAGS="-L ${DEPS_DIR}/llvm-${LLVM_VERSION}/install/lib -l c++ -l c++abi"
       export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${DEPS_DIR}/llvm-${LLVM_VERSION}/install/lib"
     fi
  
 before_script:
   - cd ${TRAVIS_BUILD_DIR}
-  - (mkdir build && cd build && cmake .. -DCMAKE_INSTALL_PREFIX="${HOME}/prefix_root" -DCMAKE_CXX_STANDARD=11 -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DSOURCE_LOCATION_BUILD_TESTS=${BUILD_TESTS})
+  - (mkdir build && cd build && cmake .. -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DCMAKE_INSTALL_PREFIX="${HOME}/prefix_root" -DCMAKE_CXX_STANDARD=11 -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DSOURCE_LOCATION_BUILD_TESTS=${BUILD_TESTS})
 
 script:
   - cd build
